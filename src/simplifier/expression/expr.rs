@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use super::{factor::Factor, term::Term};
 use super::super::reform::poly::Poly;
 
@@ -31,8 +33,13 @@ impl<T> Expr<T>
 impl<T> Factor for Expr<T> 
     where T: Factor
 {
-    fn to_polynomial(&self) -> Poly {
-        
+    fn to_polynomial(& self) -> Poly {
+        let map = HashMap::new();
+        let mut poly = Poly::new(map);
+        for term in self.terms.iter() {
+            poly = poly.add_poly(&mut term.to_polynomial());
+        }
+        poly.pow_poly(self.pow)
     }
 }
 
