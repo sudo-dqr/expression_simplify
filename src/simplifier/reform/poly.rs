@@ -27,7 +27,7 @@ impl Poly {
 
     pub fn multi_poly(&mut self, another: &mut Poly) -> Poly{
         if self.units.is_empty() {
-            return Poly::new(another.units.clone());
+            Poly::new(another.units.clone())
         } else {
             let mut new_map = HashMap::new();
             for (pow, coe) in self.units.iter_mut() {
@@ -66,5 +66,47 @@ impl Poly {
         for (pow, coe) in self.units.iter_mut() {
             new_map.insert(*pow, -*coe);
         }
+    }
+
+    pub fn build_string(&self) -> String {
+        let mut res = String::new();
+        for (pow, coe) in self.units.iter() {
+            if *pow == 0 {
+                if *coe == 0 {
+                    continue;
+                } else if *coe == 1 {
+                    res.push('1');
+                } else if *coe == -1 {
+                    res.push_str("-1");
+                } else {
+                    res.push_str(&format!("{}", coe));
+                }
+            } else if *pow == 1 {
+                if *coe == 0 {
+                    continue;
+                } else if *coe == 1 {
+                    res.push('x');
+                } else if *coe == -1 {
+                    res.push_str("-x");
+                } else {
+                    res.push_str(&format!("{}*x", coe));
+                }
+            } else if *coe == 0 {
+                continue;
+            } else if *coe == 1 {
+                res.push_str(&format!("x^{}", pow));
+            } else if *coe == -1 {
+                res.push_str(&format!("-x^{}", pow));
+            } else {
+                res.push_str(&format!("{}*x^{}", coe, pow));
+            }
+            res.push('+');
+        }
+        if res.is_empty(){
+            res.push('0');
+        } else {
+            res.pop();
+        }
+        res
     }
 }

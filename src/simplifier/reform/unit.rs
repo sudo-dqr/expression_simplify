@@ -11,7 +11,7 @@ impl Unit {
         }
     }
 
-    pub fn to_string(&self) -> String {
-        return String::from(format!("{}x^{}", self.coe, self.pow));
+    pub fn build_string(&self) -> String {
+        format!("{}x^{}", self.coe, self.pow)
     }
 }
