@@ -1,6 +1,6 @@
 [package]
 name = "expression_simplify"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 author = "sudo-dqr"
 description = "A simple expression simplifier based on OO course(SCSE, BUAA)"
