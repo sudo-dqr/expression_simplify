@@ -14,9 +14,9 @@ pub mod input_handler {
         lexer.next();
         let mut parser = parser::parser_module::Parser::new(lexer);
         let expr = parser.parse_expr();
-        let mut str = expr.to_polynomial().build_string();
-        simplifier::postsimplify(&mut str);
-        println!("Simplified expression: {}", expression);
+        let mut poly = expr.to_polynomial().build_string();
+        simplifier::postsimplify(&mut poly);
+        println!("Simplified expression: {}", poly);
     }
 
 }

@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct Poly {
     units: HashMap<i32, i32>, // <pow, coe>
 }
@@ -62,9 +63,8 @@ impl Poly {
     }
 
     pub fn negate_poly(&mut self) {
-        let mut new_map = HashMap::new();
-        for (pow, coe) in self.units.iter_mut() {
-            new_map.insert(*pow, -*coe);
+        for (_, coe) in self.units.iter_mut() {
+            *coe = -(*coe);
         }
     }
 
