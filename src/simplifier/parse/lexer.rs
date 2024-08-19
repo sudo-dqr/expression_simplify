@@ -1,6 +1,6 @@
-mod token_type {
+pub mod token_type {
 
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq)]
     pub enum TokenType {
         Num,
         X,
@@ -111,6 +111,11 @@ pub mod lexer_module {
                 }
             }
         }
+
+        pub fn get_cur_token(&self) -> &TokenType {
+            &self.token_type
+        }
+
     }
 
     #[cfg(test)]
