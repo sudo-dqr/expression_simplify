@@ -116,6 +116,10 @@ pub mod lexer_module {
             &self.token_type
         }
 
+        pub fn get_token_number(&self) -> &String {
+            &self.token_number
+        }
+
     }
 
     #[cfg(test)]

@@ -10,7 +10,8 @@ pub mod input_handler {
         let mut expression = String::new();
         io::stdin().read_line(&mut expression).unwrap();
         simplifier::presimplify(&mut expression);
-        let lexer = lexer::lexer_module::Lexer::new(&expression);
+        let mut lexer = lexer::lexer_module::Lexer::new(&expression);
+        lexer.next();
         let mut parser = parser::parser_module::Parser::new(lexer);
         let expr = parser.parse_expr();
         let mut str = expr.to_polynomial().build_string();

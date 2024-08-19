@@ -57,32 +57,33 @@ pub mod parser_module {
                 self.lexer.next();
                 if *(self.lexer.get_cur_token()) == TokenType::Exp {
                     self.lexer.next();
-                    let pow = self.lexer.get_number().parse::<i32>().unwrap();
+                    let pow = self.lexer.get_token_number().parse::<i32>().unwrap();
                     expr.set_pow(pow);
                     self.lexer.next();
                 }
                 Box::new(expr)
             } else if *(self.lexer.get_cur_token()) == TokenType::Num {
-                let number = self.lexer.get_number().parse::<i32>().unwrap();
+                let number = match self.lexer.get_token_number().parse::<i32>() {
+                    Ok(n) => n,
+                    Err(_) => panic!("Invalid number"),
+                };
                 self.lexer.next();
                 Box::new(Number::new(number))
             } else if *(self.lexer.get_cur_token()) == TokenType::Sub {
                 self.lexer.next();
-                let number = self.lexer.get_number().parse::<i32>().unwrap();
+                let number = self.lexer.get_token_number().parse::<i32>().unwrap();
                 self.lexer.next();
                 Box::new(Number::new(-number))
-            } else if *(self.lexer.get_cur_token()) == TokenType::X {
+            } else { // x^n
                 self.lexer.next();
                 if *(self.lexer.get_cur_token()) == TokenType::Exp {
                     self.lexer.next();
-                    let pow = self.lexer.get_number().parse::<i32>().unwrap();
+                    let pow = self.lexer.get_token_number().parse::<i32>().unwrap();
                     self.lexer.next();
                     Box::new(Pow::new(pow))
                 } else {
                     Box::new(Pow::new(1))
                 }
-            } else {
-                panic!("Invalid token");
             }
         }
 
