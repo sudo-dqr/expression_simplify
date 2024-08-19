@@ -1,4 +1,6 @@
 mod token_type {
+
+    #[derive(Debug)]
     pub enum TokenType {
         Num,
         X,
@@ -107,6 +109,19 @@ pub mod lexer_module {
                     }
                     _ => {}
                 }
+            }
+        }
+    }
+
+    #[cfg(test)]
+    mod lexer_test {
+        #[test] 
+        fn test() {
+            let expr = String::from("20+300*x^2");
+            let mut lexer = super::Lexer::new(&expr);
+            while (lexer.pos as usize) < expr.len() {
+                lexer.next();
+                println!("{:?}", lexer.token_type);
             }
         }
     }
