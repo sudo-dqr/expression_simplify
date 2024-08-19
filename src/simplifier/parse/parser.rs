@@ -21,8 +21,8 @@ pub mod parser_module {
             }
         }
 
-        pub fn parse_expr<T: Factor>(&mut self) -> Expr<T>{
-            let mut expr:Expr<T>  = Expr::new();
+        pub fn parse_expr(&mut self) -> Expr {
+            let mut expr  = Expr::new();
             let mut sign = 1;
             if *(self.lexer.get_cur_token()) == TokenType::Sub {
                 self.lexer.next();
@@ -40,7 +40,7 @@ pub mod parser_module {
             expr
         }
 
-        pub fn parse_term<T: Factor> (&mut self, sign: i32) -> Term<T> {
+        pub fn parse_term (&mut self, sign: i32) -> Term {
             let mut term = Term::new(sign);
             term.add_factor(self.parse_factor());
             while *(self.lexer.get_cur_token()) == TokenType::Multi {
@@ -50,11 +50,10 @@ pub mod parser_module {
             term
         }
 
-        pub fn parse_factor<T: Factor> (&mut self) -> T {
-            let token = *(self.lexer.get_cur_token());
-            if token == TokenType::Lp {
+        pub fn parse_factor(&mut self) -> Box<dyn Factor> {
+            if *(self.lexer.get_cur_token()) == TokenType::Lp {
                 self.lexer.next();
-                let expr = self.parse_expr();
+                let mut expr = self.parse_expr();
                 self.lexer.next();
                 if *(self.lexer.get_cur_token()) == TokenType::Exp {
                     self.lexer.next();
@@ -62,25 +61,25 @@ pub mod parser_module {
                     expr.set_pow(pow);
                     self.lexer.next();
                 }
-                return expr;
-            } else if token == TokenType::Num {
+                Box::new(expr)
+            } else if *(self.lexer.get_cur_token()) == TokenType::Num {
                 let number = self.lexer.get_number().parse::<i32>().unwrap();
                 self.lexer.next();
-                return Number::new(number);
-            } else if token == TokenType::Sub {
+                Box::new(Number::new(number))
+            } else if *(self.lexer.get_cur_token()) == TokenType::Sub {
                 self.lexer.next();
                 let number = self.lexer.get_number().parse::<i32>().unwrap();
                 self.lexer.next();
-                return Number::new(-number);
-            } else if token == TokenType::X {
+                Box::new(Number::new(-number))
+            } else if *(self.lexer.get_cur_token()) == TokenType::X {
                 self.lexer.next();
                 if *(self.lexer.get_cur_token()) == TokenType::Exp {
                     self.lexer.next();
                     let pow = self.lexer.get_number().parse::<i32>().unwrap();
                     self.lexer.next();
-                    return Pow::new(pow);
+                    Box::new(Pow::new(pow))
                 } else {
-                    return Pow::new(1);
+                    Box::new(Pow::new(1))
                 }
             } else {
                 panic!("Invalid token");

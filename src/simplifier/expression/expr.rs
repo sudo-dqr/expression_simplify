@@ -3,24 +3,20 @@ use std::collections::HashMap;
 use super::{factor::Factor, term::Term};
 use super::super::reform::poly::Poly;
 
-pub struct Expr<T>
-    where T: Factor 
-{
-    terms: Vec<Term<T>>,
+pub struct Expr {
+    terms: Vec<Term>,
     pow: i32,
 }
 
-impl<T> Expr<T>
-    where T: Factor
-{
-    pub fn new() -> Expr<T> {
+impl Expr {
+    pub fn new() -> Expr {
         Expr {
             terms: Vec::new(),
             pow : 1,
         }
     }
 
-    pub fn add_term(&mut self, term: Term<T>) {
+    pub fn add_term(&mut self, term: Term) {
         self.terms.push(term);
     }
 
@@ -30,9 +26,7 @@ impl<T> Expr<T>
     
 }
 
-impl<T> Factor for Expr<T> 
-    where T: Factor
-{
+impl Factor for Expr {
     fn to_polynomial(& self) -> Poly {
         let map = HashMap::new();
         let mut poly = Poly::new(map);

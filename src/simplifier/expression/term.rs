@@ -2,31 +2,25 @@ use super::factor::Factor;
 use super::super::reform::poly::Poly;
 use std::collections::HashMap;
 
-pub struct Term<T> 
-    where T: Factor 
-{
-    factors: Vec<T>,
+pub struct Term {
+    factors: Vec<Box<dyn Factor>>,
     sign: i32,    
 }
 
-impl<T> Term<T>
-    where T: Factor
-{
-    pub fn new(sign: i32) -> Term<T> {
+impl Term {
+    pub fn new(sign: i32) -> Term {
         Term {
             factors: Vec::new(),
             sign,
         }
     }
 
-    pub fn add_factor(&mut self, factor: T) {
+    pub fn add_factor(&mut self, factor: Box<dyn Factor>) {
         self.factors.push(factor);
     }
 }
 
-impl <T> Factor for Term<T> 
-    where T: Factor
-{
+impl Factor for Term {
     fn to_polynomial(&self) -> Poly {
         let mut poly = Poly::new(HashMap::new());
         for factor in self.factors.iter() {
